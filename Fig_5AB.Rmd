@@ -152,6 +152,6 @@ final_layout <- grid.arrange(
   heights = c(5, 5, 1)
 )
 
-ggsave(filename = "~/export/subset2/plots/final_paper_figure.png", plot = final_layout, dpi = 300, width = 16, height = 10)
+ggsave(filename = "~/export/subset2/plots/fig_5AB.png", plot = final_layout, dpi = 300, width = 16, height = 10)
 
 ```

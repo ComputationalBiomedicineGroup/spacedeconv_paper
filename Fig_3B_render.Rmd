@@ -48,52 +48,6 @@ spe = subsetSPE(spe, colRange = c(0, 10000))
 spe = spacedeconv::normalize(spe)
 ```
 
-
-<!-- ```{r comparison, collapse=TRUE, eval=FALSE} -->
-<!-- metadata <- read.csv("~/data/TCR/Spatial_final_table_TRB.csv") -->
-<!-- metadata$barcode <- paste0(metadata$barcode, "-1") -->
-<!-- metadata <- metadata[metadata$Sample=="16", ] -->
-
-<!-- pb <- progress::progress_bar$new(total = length(colnames(spe))) -->
-
-<!-- for (spot in colnames(spe)){ -->
-<!--   tmp <- metadata[metadata$barcode==spot, ] -->
-
-<!--   # IE Organism -->
-<!--   unknownIE <- tmp[tmp$IEDB_organism=="Unknown", ] -->
-<!--   otherIE <- tmp[tmp$IEDB_organism!="Unknown", ] -->
-<!--   sumUnknownIE <- sum(unknownIE$UMIs) -->
-<!--   sumOther <- sum(otherIE$UMIs) -->
-<!--   colData(spe)[spot, "IEUnknown"] <- sumUnknownIE -->
-<!--   colData(spe)[spot, "IEOther"] <- sumOther -->
-
-<!--   # IE Antigen -->
-<!--   unknownAnti <- tmp[tmp$IEDB_antigen=="Unknown", ] -->
-<!--   otherAnti <- tmp[tmp$IEDB_antigen!="Unknown", ] -->
-<!--   sumUnknownAnti <- sum(unknownAnti$UMIs) -->
-<!--   sumOtherAnti <- sum(otherAnti$UMIs) -->
-<!--   colData(spe)[spot, "AntiUnknown"] <- sumUnknownAnti -->
-<!--   colData(spe)[spot, "AntiOther"] <- sumOtherAnti -->
-
-<!--   # VDJ -->
-<!--   unknownVDJ <- tmp[tmp$VDJDB_organism=="Unknown", ] -->
-<!--   otherVDJ <- tmp[tmp$VDJDB_organism!="Unknown", ] -->
-<!--   sumUnknownVDJ <- sum(unknownVDJ$UMIs) -->
-<!--   sumOtherVDJ <- sum(otherVDJ$UMIs) -->
-<!--   colData(spe)[spot, "VDJUnknown"] <- sumUnknownVDJ -->
-<!--   colData(spe)[spot, "VDJOther"] <- sumOtherVDJ -->
-
-<!--   pb$tick() -->
-
-<!-- } -->
-
-<!-- pb$terminate() -->
-
-<!-- plot_comparison(spe, cell_type_1 = "IEUnknown", cell_type_2 = "IEOther", density = F, smooth = T, title="IEUnknown/IEOther", palette = "Vik", title_size = title_size, spot_size = 1.03) -->
-<!-- #plot_comparison(spe, cell_type_1 = "AntiUnknown", cell_type_2 = "AntiOther", density = F, smooth = T, title = "IEDM_Antigen") -->
-<!-- vdj <- plot_comparison(spe, cell_type_1 = "VDJUnknown", cell_type_2 = "VDJOther", density = F, smooth = T, title = "VDJUnknown/VDJOther", palette = "Vik", title_size = title_size, spot_size = 1.03) -->
-<!-- ``` -->
-
 ```{r comparison2, collapse=TRUE, eval=FALSE}
 # ORGANISM 
 metadata <- read.csv("~/data/TCR/Spatial_final_table_TRB.csv")
