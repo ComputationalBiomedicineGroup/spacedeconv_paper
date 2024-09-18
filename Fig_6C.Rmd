@@ -19,7 +19,7 @@ library(spacedeconv)
 ```
 
 ```{r include=FALSE}
-a1 <- read.table("~/data/dataCellCount/V1_Section1_detections.txt", sep = "\t", header = T)
+a1 <- read.table("./data/V1_Section1_detections.txt", sep = "\t", header = T)
 ```
 
 ```{r, collapse=TRUE}
