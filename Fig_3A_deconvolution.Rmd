@@ -25,7 +25,7 @@ spe = spacedeconv::normalize(spe)
 ```
 
 ```{r tcrMetadata, collapse=TRUE}
-metadata <- read.csv("~/data/TCR/Spatial_final_table.tsv", sep = "\t")
+metadata <- read.csv("../data/IEDB_VDJDB_table_anno.tsv", sep = "\t")
 
 # filter only TCR clonotype
 metadata <- dplyr::filter(metadata, grepl("TRB", metadata$Clonoytpe_ids))
