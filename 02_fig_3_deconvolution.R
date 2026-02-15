@@ -1,0 +1,51 @@
+library(spacedeconv)
+library(SpatialExperiment)
+figures_dir <- "./export/figures"
+objects_dir <- "./export/objects"
+dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
+dir.create(objects_dir, showWarnings = FALSE, recursive = TRUE)
+
+
+spe = read10xVisium("./data/cell2location/visium/48/")
+rownames(spe) <- rowData(spe)$symbol
+spe = preprocess(spe)
+spe = spacedeconv::normalize(spe)
+rownames(spe) <- make.names(rownames(spe), unique = TRUE)
+
+sce = readRDS("./data/cell2location/sce.rds")
+rownames(sce) <- make.names(rownames(sce), unique = TRUE)
+sce = sce[, !grepl("Unk", sce$annotation_1)]
+sce = sce[, !grepl("LowQ", sce$annotation_1)]
+sce = subsetSCE(sce, ncells = 20000, cell_type_col = "annotation_1")
+
+sce = spacedeconv::normalize(sce)
+
+signature = build_model(
+    sce,
+    cell_type_col = "annotation_1",
+    method = "cell2location",
+    epochs = 250,
+    gpu = TRUE,
+    batch_id_col = "sample"
+)
+
+deconv = deconvolute(
+    spe,
+    method = "cell2location",
+    signature = signature,
+    epochs = 30000,
+    gpu = TRUE,
+    values = "relative"
+)
+
+saveRDS(deconv, file = "./export/objects/fig_3_c2l.rds")
+
+deconv = deconvolute(
+    spe,
+    method = "rctd",
+    single_cell_obj = sce,
+    cell_type_col = "annotation_1",
+    n_cores = 8
+)
+
+saveRDS(deconv, file = "./export/objects/fig_3_rctd.rds")
