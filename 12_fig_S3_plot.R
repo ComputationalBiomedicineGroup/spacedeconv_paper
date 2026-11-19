@@ -11,6 +11,7 @@ plots_3b <- readRDS("./export/objects/fig_S3B_panels.rds")
 
 plots <- c(plots_3a, plots_3b)
 plots <- plots[-c(5, 6, 7, 11)]
+plots <- plots[-10] # Remove the COL18A1-ITGB1 panel (formerly J).
 
 add_enum <- function(p, label) {
   p +
@@ -31,10 +32,10 @@ add_enum_list <- function(plots) {
 plots <- add_enum_list(plots)
 
 layout_matrix <- rbind(
-  c(1, 2, 3, 4),
-  c(5, 6, 7, 8),
-  c(9, 10, 11, 12),
-  c(13, 13, 14, 14)
+  rep(1:4, each = 3),
+  rep(5:7, each = 4),
+  rep(8:10, each = 4),
+  rep(11:13, each = 4)
 )
 
 final_plot <- grid.arrange(

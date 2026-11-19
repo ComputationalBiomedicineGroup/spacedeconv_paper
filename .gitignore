@@ -2,3 +2,5 @@ export/*
 !export/.gitkeep
 omnipathr-log/
 Rplots.pdf
+04_fig_3_plot_2row.R
+05_combine_fig_1_fig_3_2row.sh
