@@ -103,3 +103,15 @@ rectangle <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", n_cpus = 32, return_object = FALSE
 ))
 saveRDS(rectangle, file.path(objects_dir, "fig_S8_rectangle.rds"))
+
+# spatialDWLS (build_model uses scran for marker selection).
+set.seed(42)
+spatialdwls_model <- spacedeconv::build_model(
+  sce, method = "spatialdwls", cell_type_col = "celltype_minor",
+  topNgenes = 100L
+)
+spatialdwls <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, signature = spatialdwls_model, method = "spatialdwls",
+  assay_sp = "counts", return_object = FALSE
+))
+saveRDS(spatialdwls, file.path(objects_dir, "fig_S8_spatialdwls.rds"))
