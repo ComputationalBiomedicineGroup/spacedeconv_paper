@@ -42,6 +42,34 @@ stopifnot(
   all(Matrix::colSums(assay(sce, "counts")) > 0)
 )
 
+sce$celltype_minor <- make.names(as.character(sce$celltype_minor))
+
+# Following the SPOTlight tutorial, select features on the full reference and then subsample cells.
+# Do this before loading spacedeconv to avoid a scran method-dispatch conflict
+# in the R environment.
+spotlight_features <- local({
+  sce_log <- scuttle::logNormCounts(sce)
+  eligible <- !grepl("^(RPL|RPS|MT-)", rownames(sce_log))
+  hvg <- scran::getTopHVGs(
+    scran::modelGeneVar(sce_log, subset.row = eligible), n = 3000
+  )
+  scores <- scran::scoreMarkers(
+    assay(sce_log, "logcounts"), groups = sce_log$celltype_minor,
+    subset.row = eligible, BPPARAM = BiocParallel::SerialParam()
+  )
+  markers <- do.call(rbind, lapply(names(scores), function(cell_type) {
+    ranked <- scores[[cell_type]]
+    ranked <- ranked[is.finite(ranked$mean.AUC) & ranked$mean.AUC > 0.8, ]
+    ranked <- ranked[order(ranked$mean.AUC, decreasing = TRUE), ]
+    data.frame(gene = rownames(ranked), cluster = rep(cell_type, nrow(ranked)),
+               mean.AUC = ranked$mean.AUC)
+  }))
+  list(markers = markers, hvg = hvg)
+})
+stopifnot(setequal(spotlight_features$markers$cluster, sce$celltype_minor))
+
+library(spacedeconv)
+
 # Compute unlogged CPM using all Visium genes for both signature-based methods.
 spe_first <- spacedeconv::normalize(spe, method = "cpm")
 
@@ -61,8 +89,6 @@ quantiseq <- as.matrix(spacedeconv::deconvolute(
 stopifnot(identical(rownames(quantiseq), colnames(spe_first)),
           all(is.finite(quantiseq)))
 saveRDS(quantiseq, file.path(objects_dir, "fig_S8_quantiseq.rds"))
-
-sce$celltype_minor <- make.names(as.character(sce$celltype_minor))
 
 # RCTD
 set.seed(42)
@@ -129,3 +155,18 @@ cell2location <- as.matrix(spacedeconv::deconvolute(
   values = "absolute", gpu = TRUE, return_object = FALSE
 ))
 saveRDS(cell2location, file.path(objects_dir, "fig_S8_cell2location.rds"))
+
+# SPOTlight
+set.seed(42)
+spotlight_cells <- unlist(lapply(split(seq_len(ncol(sce)), sce$celltype_minor),
+  function(cells) sample(cells, min(100L, length(cells)))), use.names = FALSE)
+spotlight_model <- spacedeconv::build_model(
+  sce[, spotlight_cells], spatial_obj = spe_shared, method = "spotlight",
+  cell_type_col = "celltype_minor", markers = spotlight_features$markers,
+  hvg = spotlight_features$hvg, nrun = 1L, .options = list(parallel = FALSE)
+)
+spotlight <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, signature = spotlight_model, method = "spotlight",
+  assay_sp = "counts", return_object = FALSE
+))
+saveRDS(spotlight, file.path(objects_dir, "fig_S8_spotlight.rds"))
