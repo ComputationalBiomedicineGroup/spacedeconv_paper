@@ -115,3 +115,17 @@ spatialdwls <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", return_object = FALSE
 ))
 saveRDS(spatialdwls, file.path(objects_dir, "fig_S8_spatialdwls.rds"))
+
+# cell2location
+set.seed(42)
+cell2location_model <- spacedeconv::build_model(
+  sce, method = "cell2location", cell_type_col = "celltype_minor",
+  batch_id_col = "orig.ident", epochs = 250L, posterior_samples = 1000L,
+  gpu = TRUE
+)
+cell2location <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, signature = cell2location_model, method = "cell2location",
+  epochs = 30000L, n_cell = 10, alpha = 20, posterior_samples = 1000L,
+  values = "absolute", gpu = TRUE, return_object = FALSE
+))
+saveRDS(cell2location, file.path(objects_dir, "fig_S8_cell2location.rds"))
