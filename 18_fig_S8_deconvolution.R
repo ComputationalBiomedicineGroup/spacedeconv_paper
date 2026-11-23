@@ -24,6 +24,7 @@ stopifnot(
   !anyDuplicated(rownames(spe)),
   !anyDuplicated(rownames(sce)),
   !anyNA(sce$orig.ident),
+  !anyNA(sce$celltype_minor),
   !anyNA(sce$celltype_major)
 )
 
@@ -60,3 +61,33 @@ quantiseq <- as.matrix(spacedeconv::deconvolute(
 stopifnot(identical(rownames(quantiseq), colnames(spe_first)),
           all(is.finite(quantiseq)))
 saveRDS(quantiseq, file.path(objects_dir, "fig_S8_quantiseq.rds"))
+
+sce$celltype_minor <- make.names(as.character(sce$celltype_minor))
+
+# RCTD
+set.seed(42)
+rctd <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, single_cell_obj = sce, method = "rctd",
+  cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
+  assay_sp = "counts", n_cores = 16, return_object = FALSE
+))
+saveRDS(rctd, file.path(objects_dir, "fig_S8_rctd.rds"))
+
+# CARD
+set.seed(42)
+card <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, single_cell_obj = sce, method = "card",
+  cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
+  assay_sp = "counts", return_object = FALSE
+))
+saveRDS(card, file.path(objects_dir, "fig_S8_card.rds"))
+
+# DOT
+set.seed(42)
+dot <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, single_cell_obj = sce, method = "dot",
+  cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
+  assay_sp = "counts", max_spot_size = 20, ratios_weight = 0,
+  return_object = FALSE
+))
+saveRDS(dot, file.path(objects_dir, "fig_S8_dot.rds"))
