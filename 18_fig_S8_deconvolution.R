@@ -1,5 +1,7 @@
 library(SpatialExperiment)
 
+set.seed(42)
+
 # Run from the repository root.
 figures_dir <- "./export/figures"
 objects_dir <- "./export/objects"
@@ -91,7 +93,6 @@ stopifnot(identical(rownames(quantiseq), colnames(spe_first)),
 saveRDS(quantiseq, file.path(objects_dir, "fig_S8_quantiseq.rds"))
 
 # RCTD
-set.seed(42)
 rctd <- as.matrix(spacedeconv::deconvolute(
   spe_shared, single_cell_obj = sce, method = "rctd",
   cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
@@ -100,7 +101,6 @@ rctd <- as.matrix(spacedeconv::deconvolute(
 saveRDS(rctd, file.path(objects_dir, "fig_S8_rctd.rds"))
 
 # CARD
-set.seed(42)
 card <- as.matrix(spacedeconv::deconvolute(
   spe_shared, single_cell_obj = sce, method = "card",
   cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
@@ -109,7 +109,6 @@ card <- as.matrix(spacedeconv::deconvolute(
 saveRDS(card, file.path(objects_dir, "fig_S8_card.rds"))
 
 # DOT
-set.seed(42)
 dot <- as.matrix(spacedeconv::deconvolute(
   spe_shared, single_cell_obj = sce, method = "dot",
   cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
@@ -119,7 +118,6 @@ dot <- as.matrix(spacedeconv::deconvolute(
 saveRDS(dot, file.path(objects_dir, "fig_S8_dot.rds"))
 
 # Rectangle
-set.seed(42)
 rectangle_model <- spacedeconv::build_model(
   sce, spatial_obj = spe_shared, method = "rectangle",
   cell_type_col = "celltype_minor", n_cpus = 32
@@ -131,7 +129,6 @@ rectangle <- as.matrix(spacedeconv::deconvolute(
 saveRDS(rectangle, file.path(objects_dir, "fig_S8_rectangle.rds"))
 
 # spatialDWLS (build_model uses scran for marker selection).
-set.seed(42)
 spatialdwls_model <- spacedeconv::build_model(
   sce, method = "spatialdwls", cell_type_col = "celltype_minor",
   topNgenes = 100L
@@ -143,7 +140,6 @@ spatialdwls <- as.matrix(spacedeconv::deconvolute(
 saveRDS(spatialdwls, file.path(objects_dir, "fig_S8_spatialdwls.rds"))
 
 # cell2location
-set.seed(42)
 cell2location_model <- spacedeconv::build_model(
   sce, method = "cell2location", cell_type_col = "celltype_minor",
   batch_id_col = "orig.ident", epochs = 250L, posterior_samples = 1000L,
@@ -157,7 +153,6 @@ cell2location <- as.matrix(spacedeconv::deconvolute(
 saveRDS(cell2location, file.path(objects_dir, "fig_S8_cell2location.rds"))
 
 # SPOTlight
-set.seed(42)
 spotlight_cells <- unlist(lapply(split(seq_len(ncol(sce)), sce$celltype_minor),
   function(cells) sample(cells, min(100L, length(cells)))), use.names = FALSE)
 spotlight_model <- spacedeconv::build_model(
