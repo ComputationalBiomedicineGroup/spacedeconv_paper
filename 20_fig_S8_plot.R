@@ -61,7 +61,6 @@ plot_heatmap <- function() {
             identical(result$used_spots, rownames(fractions)))
 }
 
-pdf(file.path(figures_dir, "fig_S8.pdf"), width = 15.65, height = 21.25, useDingbats = FALSE)
-plot_heatmap()
-png(file.path(figures_dir, "fig_S8.png"), width = 4695, height = 6375, res = 300)
+png(file.path(figures_dir, "fig_S8.png"), width = 15.65, height = 21.25,
+    units = "in", res = 600)
 plot_heatmap()

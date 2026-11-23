@@ -29,7 +29,5 @@ plots <- lapply(pairs, function(pair) {
 })
 
 combined <- wrap_plots(plots, ncol = 2)
-ggsave(file.path(figures_dir, "fig_S9.pdf"), combined,
-       width = 14, height = 19, device = grDevices::cairo_pdf)
 ggsave(file.path(figures_dir, "fig_S9.png"), combined,
-       width = 14, height = 19, dpi = 300, bg = "white")
+       width = 14, height = 19, dpi = 600, bg = "white")
