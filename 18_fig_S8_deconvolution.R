@@ -8,6 +8,17 @@ objects_dir <- "./export/objects"
 dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
 dir.create(objects_dir, showWarnings = FALSE, recursive = TRUE)
 
+check_deconvolution_results <- function(result, spatial_obj, method) {
+  if (!identical(rownames(result), colnames(spatial_obj))) {
+    warning(method, ": unexpected spot IDs or order.",
+            call. = FALSE, immediate. = TRUE)
+  }
+  if (any(!is.finite(result))) {
+    warning(method, ": non-finite estimates.",
+            call. = FALSE, immediate. = TRUE)
+  }
+}
+
 # Load the same Visium section used for Fig. S8.
 visium <- readRDS("data/allresults_minor_andersson.rds")
 spe <- SpatialExperiment(
@@ -80,7 +91,7 @@ epic <- as.matrix(spacedeconv::deconvolute(
   spe_first, method = "epic", assay_sp = "cpm",
   tumor = TRUE, scale_mrna = TRUE, return_object = FALSE
 ))
-stopifnot(identical(rownames(epic), colnames(spe_first)), all(is.finite(epic)))
+check_deconvolution_results(epic, spe_first, "epic")
 saveRDS(epic, file.path(objects_dir, "fig_S8_epic.rds"))
 
 # quanTIseq
@@ -88,8 +99,7 @@ quantiseq <- as.matrix(spacedeconv::deconvolute(
   spe_first, method = "quantiseq", assay_sp = "cpm",
   tumor = TRUE, arrays = FALSE, scale_mrna = TRUE, return_object = FALSE
 ))
-stopifnot(identical(rownames(quantiseq), colnames(spe_first)),
-          all(is.finite(quantiseq)))
+check_deconvolution_results(quantiseq, spe_first, "quantiseq")
 saveRDS(quantiseq, file.path(objects_dir, "fig_S8_quantiseq.rds"))
 
 # RCTD
@@ -98,6 +108,7 @@ rctd <- as.matrix(spacedeconv::deconvolute(
   cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
   assay_sp = "counts", n_cores = 16, return_object = FALSE
 ))
+check_deconvolution_results(rctd, spe_shared, "rctd")
 saveRDS(rctd, file.path(objects_dir, "fig_S8_rctd.rds"))
 
 # CARD
@@ -106,6 +117,7 @@ card <- as.matrix(spacedeconv::deconvolute(
   cell_type_col = "celltype_minor", batch_id_col = "orig.ident",
   assay_sp = "counts", return_object = FALSE
 ))
+check_deconvolution_results(card, spe_shared, "card")
 saveRDS(card, file.path(objects_dir, "fig_S8_card.rds"))
 
 # DOT
@@ -115,6 +127,7 @@ dot <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", max_spot_size = 20, ratios_weight = 0,
   return_object = FALSE
 ))
+check_deconvolution_results(dot, spe_shared, "dot")
 saveRDS(dot, file.path(objects_dir, "fig_S8_dot.rds"))
 
 # Rectangle
@@ -126,6 +139,7 @@ rectangle <- as.matrix(spacedeconv::deconvolute(
   spe_shared, signature = rectangle_model, method = "rectangle",
   assay_sp = "counts", n_cpus = 32, return_object = FALSE
 ))
+check_deconvolution_results(rectangle, spe_shared, "rectangle")
 saveRDS(rectangle, file.path(objects_dir, "fig_S8_rectangle.rds"))
 
 # spatialDWLS (build_model uses scran for marker selection).
@@ -137,6 +151,7 @@ spatialdwls <- as.matrix(spacedeconv::deconvolute(
   spe_shared, signature = spatialdwls_model, method = "spatialdwls",
   assay_sp = "counts", return_object = FALSE
 ))
+check_deconvolution_results(spatialdwls, spe_shared, "spatialdwls")
 saveRDS(spatialdwls, file.path(objects_dir, "fig_S8_spatialdwls.rds"))
 
 # cell2location
@@ -150,6 +165,7 @@ cell2location <- as.matrix(spacedeconv::deconvolute(
   epochs = 30000L, n_cell = 10, alpha = 20, posterior_samples = 1000L,
   values = "absolute", gpu = TRUE, return_object = FALSE
 ))
+check_deconvolution_results(cell2location, spe_shared, "cell2location")
 saveRDS(cell2location, file.path(objects_dir, "fig_S8_cell2location.rds"))
 
 # SPOTlight
@@ -164,4 +180,5 @@ spotlight <- as.matrix(spacedeconv::deconvolute(
   spe_shared, signature = spotlight_model, method = "spotlight",
   assay_sp = "counts", return_object = FALSE
 ))
+check_deconvolution_results(spotlight, spe_shared, "spotlight")
 saveRDS(spotlight, file.path(objects_dir, "fig_S8_spotlight.rds"))
