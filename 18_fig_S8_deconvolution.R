@@ -91,3 +91,15 @@ dot <- as.matrix(spacedeconv::deconvolute(
   return_object = FALSE
 ))
 saveRDS(dot, file.path(objects_dir, "fig_S8_dot.rds"))
+
+# Rectangle
+set.seed(42)
+rectangle_model <- spacedeconv::build_model(
+  sce, spatial_obj = spe_shared, method = "rectangle",
+  cell_type_col = "celltype_minor", n_cpus = 32
+)
+rectangle <- as.matrix(spacedeconv::deconvolute(
+  spe_shared, signature = rectangle_model, method = "rectangle",
+  assay_sp = "counts", n_cpus = 32, return_object = FALSE
+))
+saveRDS(rectangle, file.path(objects_dir, "fig_S8_rectangle.rds"))
