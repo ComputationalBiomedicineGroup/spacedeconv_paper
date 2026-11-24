@@ -92,7 +92,7 @@ epic <- as.matrix(spacedeconv::deconvolute(
   tumor = TRUE, scale_mrna = TRUE, return_object = FALSE
 ))
 check_deconvolution_results(epic, spe_first, "epic")
-saveRDS(epic, file.path(objects_dir, "fig_S8_epic.rds"))
+saveRDS(epic, file.path(objects_dir, "fig_S8_S9_S10_epic.rds"))
 
 # quanTIseq
 quantiseq <- as.matrix(spacedeconv::deconvolute(
@@ -100,7 +100,7 @@ quantiseq <- as.matrix(spacedeconv::deconvolute(
   tumor = TRUE, arrays = FALSE, scale_mrna = TRUE, return_object = FALSE
 ))
 check_deconvolution_results(quantiseq, spe_first, "quantiseq")
-saveRDS(quantiseq, file.path(objects_dir, "fig_S8_quantiseq.rds"))
+saveRDS(quantiseq, file.path(objects_dir, "fig_S8_S9_S10_quantiseq.rds"))
 
 # RCTD
 rctd <- as.matrix(spacedeconv::deconvolute(
@@ -109,7 +109,7 @@ rctd <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", n_cores = 16, return_object = FALSE
 ))
 check_deconvolution_results(rctd, spe_shared, "rctd")
-saveRDS(rctd, file.path(objects_dir, "fig_S8_rctd.rds"))
+saveRDS(rctd, file.path(objects_dir, "fig_S8_S9_S10_rctd.rds"))
 
 # CARD
 card <- as.matrix(spacedeconv::deconvolute(
@@ -118,7 +118,7 @@ card <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", return_object = FALSE
 ))
 check_deconvolution_results(card, spe_shared, "card")
-saveRDS(card, file.path(objects_dir, "fig_S8_card.rds"))
+saveRDS(card, file.path(objects_dir, "fig_S8_S9_S10_card.rds"))
 
 # DOT
 dot <- as.matrix(spacedeconv::deconvolute(
@@ -128,7 +128,7 @@ dot <- as.matrix(spacedeconv::deconvolute(
   return_object = FALSE
 ))
 check_deconvolution_results(dot, spe_shared, "dot")
-saveRDS(dot, file.path(objects_dir, "fig_S8_dot.rds"))
+saveRDS(dot, file.path(objects_dir, "fig_S8_S9_S10_dot.rds"))
 
 # Rectangle
 rectangle_model <- spacedeconv::build_model(
@@ -140,7 +140,7 @@ rectangle <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", n_cpus = 32, return_object = FALSE
 ))
 check_deconvolution_results(rectangle, spe_shared, "rectangle")
-saveRDS(rectangle, file.path(objects_dir, "fig_S8_rectangle.rds"))
+saveRDS(rectangle, file.path(objects_dir, "fig_S8_S9_S10_rectangle.rds"))
 
 # spatialDWLS (build_model uses scran for marker selection).
 spatialdwls_model <- spacedeconv::build_model(
@@ -152,7 +152,7 @@ spatialdwls <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", return_object = FALSE
 ))
 check_deconvolution_results(spatialdwls, spe_shared, "spatialdwls")
-saveRDS(spatialdwls, file.path(objects_dir, "fig_S8_spatialdwls.rds"))
+saveRDS(spatialdwls, file.path(objects_dir, "fig_S8_S9_S10_spatialdwls.rds"))
 
 # cell2location
 cell2location_model <- spacedeconv::build_model(
@@ -166,7 +166,7 @@ cell2location <- as.matrix(spacedeconv::deconvolute(
   values = "absolute", gpu = TRUE, return_object = FALSE
 ))
 check_deconvolution_results(cell2location, spe_shared, "cell2location")
-saveRDS(cell2location, file.path(objects_dir, "fig_S8_cell2location.rds"))
+saveRDS(cell2location, file.path(objects_dir, "fig_S8_S9_S10_cell2location.rds"))
 
 # SPOTlight
 spotlight_cells <- unlist(lapply(split(seq_len(ncol(sce)), sce$celltype_minor),
@@ -181,4 +181,4 @@ spotlight <- as.matrix(spacedeconv::deconvolute(
   assay_sp = "counts", return_object = FALSE
 ))
 check_deconvolution_results(spotlight, spe_shared, "spotlight")
-saveRDS(spotlight, file.path(objects_dir, "fig_S8_spotlight.rds"))
+saveRDS(spotlight, file.path(objects_dir, "fig_S8_S9_S10_spotlight.rds"))
