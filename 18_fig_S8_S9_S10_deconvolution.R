@@ -133,11 +133,11 @@ saveRDS(dot, file.path(objects_dir, "fig_S8_S9_S10_dot.rds"))
 # Rectangle
 rectangle_model <- spacedeconv::build_model(
   sce, spatial_obj = spe_shared, method = "rectangle",
-  cell_type_col = "celltype_minor", n_cpus = 32
+  cell_type_col = "celltype_minor", n_cpus = 16
 )
 rectangle <- as.matrix(spacedeconv::deconvolute(
   spe_shared, signature = rectangle_model, method = "rectangle",
-  assay_sp = "counts", n_cpus = 32, return_object = FALSE
+  assay_sp = "counts", n_cpus = 16, return_object = FALSE
 ))
 check_deconvolution_results(rectangle, spe_shared, "rectangle")
 saveRDS(rectangle, file.path(objects_dir, "fig_S8_S9_S10_rectangle.rds"))
