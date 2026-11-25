@@ -123,19 +123,19 @@ deconvQuanTIseq <- deconvQuanTIseq[!duplicated(rownames(deconvQuanTIseq)), ]
 
 cluster1 <- spacedeconv::cluster(
   deconvQuanTIseq,
-  data = "expression",
+  spmethod = "expression",
   clusres = 0.1
 )
 
 cluster2 <- spacedeconv::cluster(
   deconvQuanTIseq,
-  data = "expression",
+  spmethod = "expression",
   clusres = 0.2
 )
 
 cluster3 <- spacedeconv::cluster(
   deconvQuanTIseq,
-  data = "expression",
+  spmethod = "expression",
   clusres = 0.3
 )
 

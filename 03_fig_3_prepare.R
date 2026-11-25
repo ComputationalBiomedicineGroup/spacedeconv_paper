@@ -41,7 +41,7 @@ duplicate <- c(
 c2l <- c2l[, !colnames(c2l) %in% spot_to_remove]
 c2l <- c2l[!rownames(c2l) %in% duplicate, ]
 
-cluster <- spacedeconv::cluster(c2l, data = "expression", clusres = c(0.1, 0.6))
+cluster <- spacedeconv::cluster(c2l, spmethod = "expression", clusres = c(0.1, 0.6))
 
 get_cluster_features(
     cluster,
@@ -176,7 +176,6 @@ mAbundantAgg <- plot_most_abundant(
 
 clusterC2L <- spacedeconv::cluster(
     spe = c2l,
-    data = "deconvolution",
     spmethod = "cell2location",
     nclusters = c(6, 8, 10, 12, 14, 16, 18, 20, 22),
     method = "hclust"
