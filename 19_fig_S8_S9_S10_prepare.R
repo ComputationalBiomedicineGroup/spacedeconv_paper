@@ -1,7 +1,7 @@
 library(SpatialExperiment)
 library(spacedeconv)
 
-# Run from the repository root after 19_fig_S8_S9_S10_deconvolution.R.
+# Run from the repository root after 18_fig_S8_S9_S10_deconvolution.R.
 objects_dir <- "./export/objects"
 second_gen <- c("spatialdwls", "cell2location", "spotlight", "rctd", "card",
                 "dot", "rectangle")
