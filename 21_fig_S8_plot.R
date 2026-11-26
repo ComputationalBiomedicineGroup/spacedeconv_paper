@@ -2,7 +2,7 @@ library(spacedeconv)
 library(ComplexHeatmap)
 library(grid)
 
-# Run from the repository root after 19_fig_S8_S9_S10_prepare.R.
+# Run from the repository root after 20_fig_S8_S9_S10_prepare.R.
 figures_dir <- "./export/figures"
 objects_dir <- "./export/objects"
 dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
