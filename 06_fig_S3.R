@@ -309,31 +309,52 @@ x24 <- plot_spatial(
   title = ""
 )
 
-grid_layout <- rbind(
-  c(1, 2, 3, 4),
-  c(5, 6, 7, 8),
-  c(9, 10, 11, 12),
-  c(13, 14, 15, 16),
-  c(17, 18, 19, 20),
-  c(21, 22, 23, 24)
-)
-
-grid_1 <- grid.arrange(
+plots <- list(
   x1, x2, x3, x4,
   x5, x6, x7, x8,
   x9, x10, x11, x12,
   x13, x14, x15, x16,
   x17, x18, x19, x20,
-  x21, x22, x23, x24,
-  layout_matrix = grid_layout
+  x21, x22, x23, x24
+)
+
+column_labels <- c("Cancer Basal SC", "Cancer LumA SC", "Cancer LumB SC", "Cancer Her2 SC")
+sample_ids <- c("1142243F", "1160920F", "CID4465", "CID44971", "CID4290", "CID4535")
+sample_subtypes <- c("Basal", "Basal", "Basal", "Basal", "LumA", "LumB")
+
+column_headers <- lapply(column_labels, function(label) {
+  textGrob(label, x = 0.45, gp = gpar(fontsize = 32))
+})
+row_headers <- Map(function(id, subtype) {
+  grobTree(
+    textGrob(id, x = 0.37, rot = 90, gp = gpar(fontsize = 32, fontface = "bold")),
+    textGrob(paste0("(", subtype, ")"), x = 0.67, rot = 90, gp = gpar(fontsize = 32))
+  )
+}, sample_ids, sample_subtypes)
+
+grid_layout <- rbind(
+  c(NA, 25:28),
+  cbind(29:34, matrix(seq_along(plots), nrow = 6, byrow = TRUE))
+)
+
+# Build the layout without opening a file-backed graphics device.
+pdf(NULL)
+grid_1 <- tryCatch(
+  arrangeGrob(
+    grobs = c(plots, column_headers, row_headers),
+    layout_matrix = grid_layout,
+    widths = unit.c(unit(1.8, "in"), unit(rep(1, 4), "null")),
+    heights = unit.c(unit(0.6, "in"), unit(rep(1, 6), "null"))
+  ),
+  finally = dev.off()
 )
 
 ggsave(
-  "./export/figures/fig_S2.png",
+  "./export/figures/fig_S3.png",
   plot = grid_1,
   dpi = 600,
-  width = 20,
-  height = 30,
+  width = 21.8,
+  height = 30.6,
   units = "in",
   bg = "white"
 )

@@ -9,8 +9,8 @@ dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
 dir.create(objects_dir, showWarnings = FALSE, recursive = TRUE)
 
 
-c2l <- readRDS("./export/objects/fig_3_c2l.rds")
-rctd <- readRDS("./export/objects/fig_3_rctd.rds")
+c2l <- readRDS("./export/objects/fig_1_brain_c2l.rds")
+rctd <- readRDS("./export/objects/fig_1_brain_rctd.rds")
 
 spot_to_remove <- c(
   "AATCGAGGTCTCAAGG-1", "ACCACACGGTTGATGG-1",
@@ -41,7 +41,7 @@ duplicate <- c(
 c2l <- c2l[, !colnames(c2l) %in% spot_to_remove]
 c2l <- c2l[!rownames(c2l) %in% duplicate, ]
 
-cluster <- spacedeconv::cluster(c2l, data = "expression", clusres = c(0.1, 0.6))
+cluster <- spacedeconv::cluster(c2l, spmethod = "expression", clusres = c(0.1, 0.6))
 
 get_cluster_features(
     cluster,
@@ -176,7 +176,6 @@ mAbundantAgg <- plot_most_abundant(
 
 clusterC2L <- spacedeconv::cluster(
     spe = c2l,
-    data = "deconvolution",
     spmethod = "cell2location",
     nclusters = c(6, 8, 10, 12, 14, 16, 18, 20, 22),
     method = "hclust"
@@ -299,7 +298,7 @@ truth <- plot_spatial(
     shift_positive = FALSE
 )
 
-plots_S2 <- list(
+plots_brain <- list(
     truth,
     mAbundantAgg,
     hypo,
@@ -309,4 +308,4 @@ plots_S2 <- list(
     clus01,
     clus06
 )
-saveRDS(plots_S2, file = "./export/objects/fig_3_panels.rds")
+saveRDS(plots_brain, file = "./export/objects/fig_1_brain_panels.rds")

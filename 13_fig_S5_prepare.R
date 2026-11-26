@@ -10,7 +10,7 @@ library(SpatialExperiment)
 library(ggplot2)
 library(decoupleR)
 
-deconv <- readRDS("./export/objects/fig_S4_c2l.rds")
+deconv <- readRDS("./export/objects/fig_S5_c2l.rds")
 
 title_size <- 22
 font_size <- 18
@@ -141,5 +141,5 @@ res <- spacedeconv::cluster(
   dist_method = "euclidean"
 )
 
-plots_4 <- list(truth, kmeans_7, mAbundant, oligo, l5, l6)
-saveRDS(plots_4, file = "./export/objects/fig_S4_panels.rds")
+plots_s5 <- list(truth, kmeans_7, mAbundant, oligo, l5, l6)
+saveRDS(plots_s5, file = "./export/objects/fig_S5_panels.rds")

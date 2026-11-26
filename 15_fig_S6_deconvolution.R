@@ -77,5 +77,5 @@ qBcells <- plot_spatial(
     spot_size = 1.03
 )
 
-plots_5A <- list(patho, geneSet, qBcells)
-saveRDS(plots_5A, file = "./export/objects/fig_S5_panels.rds")
+plots_s6 <- list(patho, geneSet, qBcells)
+saveRDS(plots_s6, file = "./export/objects/fig_S6_panels.rds")
