@@ -33,20 +33,11 @@ grid_layout <- rbind(
     c(4, 4, 5, 5, 6, 6, 7, 7)
 )
 
-final <- grid.arrange(
-    grobs = plots,
-    layout_matrix = grid_layout
-)
-
-brain_file <- file.path(figures_dir, "fig_1_brain_2row.png")
-ggsave(
-    filename = brain_file,
-    plot = final,
-    dpi = 600,
-    width = 20,
-    height = 10,
-    units = "in",
-    bg = "white"
+# Build the layout without creating an Rplots.pdf.
+pdf(NULL)
+final <- tryCatch(
+    arrangeGrob(grobs = plots, layout_matrix = grid_layout),
+    finally = dev.off()
 )
 
 # Assemble the overview (A) and brain panels (B–H).
@@ -56,14 +47,25 @@ convert_image <- function(args) {
     }
 }
 
-figure_width <- system2("identify", shQuote(c("-format", "%w", brain_file)), stdout = TRUE)
-if (length(figure_width) != 1L || !grepl("^[0-9]+$", figure_width)) {
-    stop("Could not read the brain panel image width.", call. = FALSE)
-}
-
-overview_file <- tempfile("fig_1_overview_resized_", tmpdir = figures_dir, fileext = ".png")
-gap_file <- tempfile("fig_1_gap_", tmpdir = figures_dir, fileext = ".png")
+brain_file <- tempfile("fig_1_brain_", fileext = ".png")
+overview_file <- tempfile("fig_1_overview_resized_", fileext = ".png")
+gap_file <- tempfile("fig_1_gap_", fileext = ".png")
 tryCatch({
+    ggsave(
+        filename = brain_file,
+        plot = final,
+        dpi = 600,
+        width = 20,
+        height = 10,
+        units = "in",
+        bg = "white"
+    )
+
+    figure_width <- system2("identify", shQuote(c("-format", "%w", brain_file)), stdout = TRUE)
+    if (length(figure_width) != 1L || !grepl("^[0-9]+$", figure_width)) {
+        stop("Could not read the brain panel image width.", call. = FALSE)
+    }
+
     convert_image(c("data/spacedeconv_overview.png", "-resize", paste0(figure_width, "x"),
                     "-background", "white", "-alpha", "remove", "-alpha", "off", overview_file))
     convert_image(c(overview_file, "-font", "DejaVu-Sans-Bold", "-pointsize", "200",
@@ -71,4 +73,4 @@ tryCatch({
     convert_image(c("-size", paste0(figure_width, "x550"), "xc:white", gap_file))
     convert_image(c(overview_file, gap_file, brain_file, "-background", "white",
                     "-gravity", "center", "-append", file.path(figures_dir, "fig_1.png")))
-}, finally = unlink(c(overview_file, gap_file)))
+}, finally = unlink(c(brain_file, overview_file, gap_file)))
