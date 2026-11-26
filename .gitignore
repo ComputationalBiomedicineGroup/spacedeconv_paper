@@ -2,3 +2,4 @@ export/*
 !export/.gitkeep
 /export_*/
 omnipathr-log/
+Rplots.pdf
