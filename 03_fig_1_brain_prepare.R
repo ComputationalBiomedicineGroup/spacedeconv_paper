@@ -9,8 +9,8 @@ dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
 dir.create(objects_dir, showWarnings = FALSE, recursive = TRUE)
 
 
-c2l <- readRDS("./export/objects/fig_3_c2l.rds")
-rctd <- readRDS("./export/objects/fig_3_rctd.rds")
+c2l <- readRDS("./export/objects/fig_1_brain_c2l.rds")
+rctd <- readRDS("./export/objects/fig_1_brain_rctd.rds")
 
 spot_to_remove <- c(
   "AATCGAGGTCTCAAGG-1", "ACCACACGGTTGATGG-1",
@@ -298,7 +298,7 @@ truth <- plot_spatial(
     shift_positive = FALSE
 )
 
-plots_S2 <- list(
+plots_brain <- list(
     truth,
     mAbundantAgg,
     hypo,
@@ -308,4 +308,4 @@ plots_S2 <- list(
     clus01,
     clus06
 )
-saveRDS(plots_S2, file = "./export/objects/fig_3_panels.rds")
+saveRDS(plots_brain, file = "./export/objects/fig_1_brain_panels.rds")

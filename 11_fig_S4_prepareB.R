@@ -8,10 +8,10 @@ dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
 dir.create(objects_dir, showWarnings = FALSE, recursive = TRUE)
 
 
-decouple <- readRDS("./export/objects/fig_S3B_decoupler.rds")
-tcr <- readRDS("./export/objects/fig_S3B_tcr.rds")
-deconvEPIC <- readRDS("./export/objects/fig_S3B_epic.rds")
-deconvQuanTIseq <- readRDS("./export/objects/fig_S3B_quantiseq.rds")
+decouple <- readRDS("./export/objects/fig_S4B_decoupler.rds")
+tcr <- readRDS("./export/objects/fig_S4B_tcr.rds")
+deconvEPIC <- readRDS("./export/objects/fig_S4B_epic.rds")
+deconvQuanTIseq <- readRDS("./export/objects/fig_S4B_quantiseq.rds")
 
 title_size <- 22
 font_size <- 18
@@ -269,7 +269,7 @@ col <- plot_spatial(
   spot_size = 1.03
 )
 
-plots_3b <- list(
+plots_s4b <- list(
   wnt,
   hypox,
   myc,
@@ -282,4 +282,4 @@ plots_3b <- list(
   mAbundantNoCancer
 )
 
-saveRDS(plots_3b, file = "./export/objects/fig_S3B_panels.rds")
+saveRDS(plots_s4b, file = "./export/objects/fig_S4B_panels.rds")

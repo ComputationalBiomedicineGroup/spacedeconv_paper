@@ -6,12 +6,8 @@ dir.create(figures_dir, showWarnings = FALSE, recursive = TRUE)
 dir.create(objects_dir, showWarnings = FALSE, recursive = TRUE)
 
 
-plots_3a <- readRDS("./export/objects/fig_S3A_panels.rds")
-plots_3b <- readRDS("./export/objects/fig_S3B_panels.rds")
-
-plots <- c(plots_3a, plots_3b)
-plots <- plots[-c(5, 6, 7, 11)]
-plots <- plots[-10] # Remove the COL18A1-ITGB1 panel (formerly J).
+plots <- readRDS("./export/objects/fig_1_brain_panels.rds")
+plots <- plots[-5]
 
 add_enum <- function(p, label) {
   p +
@@ -21,7 +17,7 @@ add_enum <- function(p, label) {
       plot.title.position = "plot",
       plot.tag = element_text(hjust = 0, vjust = 1, face = "bold", size = 24),
       plot.tag.position = c(0, 1),
-      plot.margin = margin(6, 6, 6, 6)
+      plot.margin = margin(0, 0, 0, 0)
     )
 }
 
@@ -30,25 +26,26 @@ add_enum_list <- function(plots) {
 }
 
 plots <- add_enum_list(plots)
+plots[[1]] <- plots[[1]] + theme(plot.margin = margin(0, 250, 0, 0))
 
-layout_matrix <- rbind(
-  rep(1:4, each = 3),
-  rep(5:7, each = 4),
-  rep(8:10, each = 4),
-  rep(11:13, each = 4)
+grid_layout <- rbind(
+    c(1, 1, 1, 1),
+    c(2, 2, 3, 3),
+    c(4, 4, 5, 5),
+    c(6, 6, 7, 7)
 )
 
-final_plot <- grid.arrange(
-  grobs = plots,
-  layout_matrix = layout_matrix
+final <- grid.arrange(
+    grobs = plots,
+    layout_matrix = grid_layout
 )
 
-ggplot2::ggsave(
-  filename = "./export/figures/fig_S3.png",
-  plot = final_plot,
-  width = 20,
-  height = 25,
-  units = "in",
-  dpi = 600,
-  bg = "white"
+ggsave(
+    filename = "./export/figures/fig_1_brain.png",
+    plot = final,
+    dpi = 600,
+    width = 10,
+    height = 20,
+    units = "in",
+    bg = "white"
 )

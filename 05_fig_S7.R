@@ -179,7 +179,7 @@ final <- plot_grid(
 )
 
 ggsave(
-    filename = "./export/figures/fig_4.png",
+    filename = "./export/figures/fig_S7.png",
     plot = final,
     dpi = 600,
     width = 10,
