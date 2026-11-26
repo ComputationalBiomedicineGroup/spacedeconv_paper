@@ -1,5 +1,4 @@
 export/*
 !export/.gitkeep
-/export_2026-11-24/
+/export_*/
 omnipathr-log/
-Rplots.pdf
