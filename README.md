@@ -1,6 +1,6 @@
 ### Spacedeconv Figure Reproduction
 
-This repository contains the main R objects and scripts to reproduce the figures from the spacedeconv article:
+This repository contains the main R objects and scripts needed to reproduce the figures in the upcoming spacedeconv article, for which a preprint is already available:
 
 > Constantin Zackl, Maria Zopoglou, Reto Stauffer et al.  
 spacedeconv: deconvolution of tissue architecture from  
